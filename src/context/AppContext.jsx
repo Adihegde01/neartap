@@ -7,19 +7,36 @@ import * as api from '../api/client';
 const AppContext = createContext(null);
 
 export function AppProvider({ children }) {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem('neartap_logged_user')) || null;
+    } catch (e) {
+      return null;
+    }
+  });
   const [idToken, setIdToken] = useState(null);
   const [authLoading, setAuthLoading] = useState(true);
   const [location, setLocation] = useState(null);
   const [locationError, setLocationError] = useState(null);
   const [taps, setTaps] = useState(MOCK_TAPS);
-  const [savedTaps, setSavedTaps] = useState([]);
+  const [savedTaps, setSavedTaps] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem('neartap_saved_taps')) || [];
+    } catch (e) {
+      return [];
+    }
+  });
   const [activeFilters, setActiveFilters] = useState(['all']);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTap, setSelectedTap] = useState(null);
   const [mapCenter, setMapCenter] = useState([12.9716, 77.5946]);
   const [mapZoom, setMapZoom] = useState(13);
   const [showMockLogin, setShowMockLogin] = useState(false);
+
+  // Sync savedTaps to localStorage
+  useEffect(() => {
+    localStorage.setItem('neartap_saved_taps', JSON.stringify(savedTaps));
+  }, [savedTaps]);
 
   // Auth listener
   useEffect(() => {
@@ -70,7 +87,7 @@ export function AppProvider({ children }) {
   const loadTaps = useCallback(async () => {
     try {
       const data = await api.fetchTaps();
-      if (data && data.length > 0) {
+      if (data) {
         setTaps(data);
       }
     } catch (err) {
@@ -233,6 +250,7 @@ export function AppProvider({ children }) {
       console.warn('Signout failed, clearing state locally:', e);
     }
     setUser(null);
+    localStorage.removeItem('neartap_logged_user');
     setIdToken(null);
   };
 
@@ -283,6 +301,7 @@ export function AppProvider({ children }) {
     
     const loggedUser = { uid: newUser.uid, displayName: newUser.name, email: newUser.email, role: newUser.role, photoURL: newUser.photoURL };
     setUser(loggedUser);
+    localStorage.setItem('neartap_logged_user', JSON.stringify(loggedUser));
     setIdToken('demo');
     setShowMockLogin(false);
     return loggedUser;
@@ -299,6 +318,7 @@ export function AppProvider({ children }) {
     }
     const loggedUser = { uid: matched.uid, displayName: matched.name, email: matched.email, role: matched.role || 'user', photoURL: matched.photoURL };
     setUser(loggedUser);
+    localStorage.setItem('neartap_logged_user', JSON.stringify(loggedUser));
     setIdToken('demo');
     setShowMockLogin(false);
     return loggedUser;
