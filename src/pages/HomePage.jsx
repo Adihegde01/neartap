@@ -15,62 +15,29 @@ export default function HomePage() {
   const [searching, setSearching] = useState(false);
 
   useEffect(() => {
-    if (searchQuery.trim().length < 3) {
+    if (searchQuery.trim().length < 2) {
       setSuggestions([]);
       return;
     }
 
-    const delayDebounceFn = setTimeout(async () => {
+    const delayDebounceFn = setTimeout(() => {
       setSearching(true);
-      try {
-        // 1. Search local taps
-        const matchingTaps = taps.filter(t => 
-          t.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          t.address.toLowerCase().includes(searchQuery.toLowerCase())
-        ).map(t => ({
-          type: 'tap',
-          id: `tap-${t.id}`,
-          name: t.name,
-          sub: t.address,
-          lat: t.lat,
-          lng: t.lng,
-          raw: t
-        }));
+      const matchingTaps = taps.filter(t => 
+        t.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        t.address.toLowerCase().includes(searchQuery.toLowerCase())
+      ).map(t => ({
+        type: 'tap',
+        id: `tap-${t.id}`,
+        name: t.name,
+        sub: t.address,
+        lat: t.lat,
+        lng: t.lng,
+        raw: t
+      }));
 
-        // 2. Fetch areas from Nominatim OpenStreetMap
-        const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchQuery + ', Bengaluru')}&limit=4`;
-        const res = await fetch(url, { 
-          headers: { 
-            'Accept-Language': 'en',
-            'User-Agent': 'NearTap-App/1.0'
-          } 
-        });
-        
-        let matchingPlaces = [];
-        if (res.ok) {
-          const data = await res.json();
-          matchingPlaces = data.map(item => {
-            const parts = item.display_name.split(',');
-            const name = parts[0];
-            const sub = parts.slice(1).slice(0, 3).join(',').trim();
-            return {
-              type: 'place',
-              id: `place-${item.place_id}`,
-              name,
-              sub,
-              lat: parseFloat(item.lat),
-              lng: parseFloat(item.lon)
-            };
-          });
-        }
-
-        setSuggestions([...matchingTaps, ...matchingPlaces]);
-      } catch (err) {
-        console.warn('Geocoding error:', err);
-      } finally {
-        setSearching(false);
-      }
-    }, 400);
+      setSuggestions(matchingTaps);
+      setSearching(false);
+    }, 200);
 
     return () => clearTimeout(delayDebounceFn);
   }, [searchQuery, taps]);
@@ -128,7 +95,7 @@ export default function HomePage() {
             <input
               ref={inputRef}
               type="text"
-              placeholder="Search area or landmark..."
+              placeholder="Search water taps..."
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
               className="flex-1 bg-transparent text-xs outline-none text-white placeholder:text-gray-500"
@@ -161,7 +128,7 @@ export default function HomePage() {
                   className="w-full text-left px-4 py-3 flex items-start gap-2.5 hover:bg-white/5 transition-colors"
                 >
                   <span className="mt-0.5 text-teal-400">
-                    {s.type === 'tap' ? <Droplets className="w-3.5 h-3.5" /> : <MapPin className="w-3.5 h-3.5" />}
+                    <Droplets className="w-3.5 h-3.5" />
                   </span>
                   <div>
                     <p className="text-xs font-bold text-white leading-tight">{s.name}</p>
