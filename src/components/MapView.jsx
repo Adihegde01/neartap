@@ -1,9 +1,10 @@
-import { MapContainer, TileLayer, Marker, Popup, useMap, Circle, ZoomControl } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMap, Circle } from 'react-leaflet';
 import { useApp } from '../context/AppContext';
 import L from 'leaflet';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { formatDistance } from '../data/mockTaps';
+import { Locate, Plus, Minus } from 'lucide-react';
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -67,8 +68,68 @@ const youIcon = L.divIcon({
 
 function MapSync({ center, zoom }) {
   const map = useMap();
-  useEffect(() => { map.setView(center, zoom, { animate: true, duration: 0.6 }); }, [center, zoom, map]);
+  useEffect(() => {
+    map.setView(center, zoom, { animate: true, duration: 0.8 });
+  }, [center, zoom, map]);
   return null;
+}
+
+function MapControls() {
+  const map = useMap();
+  const { location, requestLocation } = useApp();
+
+  const handleZoomIn = (e) => {
+    e.stopPropagation();
+    map.zoomIn(1, { animate: true, duration: 0.35 });
+  };
+
+  const handleZoomOut = (e) => {
+    e.stopPropagation();
+    map.zoomOut(1, { animate: true, duration: 0.35 });
+  };
+
+  const handleRelocate = (e) => {
+    e.stopPropagation();
+    if (location) {
+      map.flyTo(location, 15, {
+        animate: true,
+        duration: 1.2
+      });
+    } else {
+      requestLocation();
+    }
+  };
+
+  return (
+    <div className="absolute bottom-6 right-6 z-[1000] flex flex-col gap-3">
+      {/* Relocate/Compass Button */}
+      <button
+        onClick={handleRelocate}
+        className="w-11 h-11 rounded-full bg-white border border-slate-200/80 shadow-[0_4px_12px_rgba(0,0,0,0.12)] hover:shadow-[0_6px_16px_rgba(0,0,0,0.18)] hover:text-blue-600 active:scale-95 flex items-center justify-center text-slate-600 transition-all cursor-pointer"
+        title="Find my location"
+      >
+        <Locate className="w-5 h-5" />
+      </button>
+
+      {/* Zoom Controls */}
+      <div className="flex flex-col rounded-2xl bg-white border border-slate-200/80 shadow-[0_4px_12px_rgba(0,0,0,0.12)] overflow-hidden">
+        <button
+          onClick={handleZoomIn}
+          className="w-11 h-11 flex items-center justify-center text-slate-600 hover:text-blue-600 hover:bg-slate-50 transition-all font-bold text-lg border-b border-slate-100 cursor-pointer"
+          title="Zoom in"
+        >
+          <Plus className="w-5 h-5" />
+        </button>
+        <button
+          onClick={handleZoomOut}
+          className="w-11 h-11 flex items-center justify-center text-slate-600 hover:text-blue-600 hover:bg-slate-50 transition-all font-bold text-lg cursor-pointer"
+          title="Zoom out"
+        >
+          <Minus className="w-5 h-5" />
+        </button>
+      </div>
+    </div>
+  );
 }
 
 export default function MapView() {
@@ -82,6 +143,12 @@ export default function MapView() {
       style={{ height: '100%', width: '100%' }}
       zoomControl={false}
       attributionControl={false}
+      zoomAnimation={true}
+      zoomAnimationThreshold={4}
+      fadeAnimation={true}
+      markerZoomAnimation={true}
+      inertia={true}
+      easeLinearity={0.2}
     >
       <TileLayer
         url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
@@ -89,7 +156,7 @@ export default function MapView() {
         maxZoom={20}
       />
 
-      <ZoomControl position="bottomright" />
+      <MapControls />
       <MapSync center={mapCenter} zoom={mapZoom} />
 
       {/* User location */}
