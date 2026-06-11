@@ -45,8 +45,7 @@ function getTags(tap) {
   } else {
     tags.push({ label: 'Closed', cls: 'pill-gray' });
   }
-  if (tap.isVerified)             tags.push({ label: 'Govt verified', cls: 'pill-blue' });
-  if (tap.confirmations >= 3 && !tap.isVerified) tags.push({ label: 'Tested', cls: 'pill-teal' });
+  if (tap.confirmations >= 3) tags.push({ label: 'Tested', cls: 'pill-teal' });
   if (!tap.isFree) {
     const methods = (tap.paymentMethods || []).map(m => m === 'coin' ? 'Coin' : m.toUpperCase()).join('/');
     tags.push({ label: `Paid (${methods || 'Coin/UPI'})`, cls: 'pill-amber' });
