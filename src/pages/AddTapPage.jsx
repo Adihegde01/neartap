@@ -23,8 +23,13 @@ const pinIcon = L.divIcon({
   iconSize:[32,32], iconAnchor:[16,32],
 });
 
-function PinSelector({ position, setPosition }) {
-  useMapEvents({ click(e) { setPosition([e.latlng.lat, e.latlng.lng]); } });
+function PinSelector({ position, setPosition, setHasClickedMap }) {
+  useMapEvents({
+    click(e) {
+      setPosition([e.latlng.lat, e.latlng.lng]);
+      setHasClickedMap(true);
+    }
+  });
   return position ? <Marker position={position} icon={pinIcon} /> : null;
 }
 
@@ -40,6 +45,7 @@ export default function AddTapPage() {
   const { user, signIn, addTap, location, mapCenter } = useApp();
   const [form, setForm] = useState({ name:'', address:'', hours:'24/7', customHours:'', isFree:false, paymentMethods:[], isAccessible:false, waterQuality:'Municipal', description:'' });
   const [pin, setPin]           = useState(location || mapCenter);
+  const [hasClickedMap, setHasClickedMap] = useState(false);
   const [photo, setPhoto]       = useState(null);
   const [loading, setLoading]   = useState(false);
   const [success, setSuccess]   = useState(false);
@@ -73,9 +79,42 @@ export default function AddTapPage() {
     const errs = validate();
     if (Object.keys(errs).length) { setErrors(errs); return; }
     setLoading(true);
+
+    let finalPin = pin;
+    if (!hasClickedMap && form.address.trim()) {
+      try {
+        const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(form.address.trim() + ', Bengaluru')}&limit=1`;
+        const res = await fetch(url, {
+          headers: {
+            'Accept-Language': 'en',
+            'User-Agent': 'NearTap-App/1.0'
+          }
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.length > 0) {
+            finalPin = [parseFloat(data[0].lat), parseFloat(data[0].lon)];
+          } else {
+            setErrors(p => ({ ...p, address: 'Could not resolve this address. Please tap the map to pin it manually.' }));
+            setLoading(false);
+            return;
+          }
+        } else {
+          setErrors(p => ({ ...p, address: 'Address lookup service unavailable. Please pin it manually on the map.' }));
+          setLoading(false);
+          return;
+        }
+      } catch (err) {
+        console.warn('Geocoding address failed:', err);
+        setErrors(p => ({ ...p, address: 'Error looking up address. Please pin it manually on the map.' }));
+        setLoading(false);
+        return;
+      }
+    }
+
     await new Promise(r => setTimeout(r, 800));
     const hours = form.hours === 'Custom' ? (form.customHours || '24/7') : form.hours;
-    addTap({ name:form.name.trim(), address:form.address.trim(), lat:pin[0], lng:pin[1], hours, isFree:form.isFree, paymentMethods:form.isFree ? [] : form.paymentMethods, isAccessible:form.isAccessible, waterQuality:form.waterQuality, description:form.description.trim(), photos: photo ? [photo] : [] });
+    addTap({ name:form.name.trim(), address:form.address.trim(), lat:finalPin[0], lng:finalPin[1], hours, isFree:form.isFree, paymentMethods:form.isFree ? [] : form.paymentMethods, isAccessible:form.isAccessible, waterQuality:form.waterQuality, description:form.description.trim(), photos: photo ? [photo] : [] });
     setLoading(false); setSuccess(true);
     setTimeout(() => navigate('/'), 1800);
   };
@@ -125,7 +164,7 @@ export default function AddTapPage() {
                 <div className="rounded-2xl overflow-hidden" style={{ height:250, border:'1px solid rgba(255,255,255,0.08)' }}>
                   <MapContainer center={pin || mapCenter} zoom={14} style={{ height:'100%', width:'100%' }} zoomControl={false}>
                     <TileLayer attribution='&copy; OpenStreetMap contributors' url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-                    <PinSelector position={pin} setPosition={setPin} />
+                    <PinSelector position={pin} setPosition={setPin} setHasClickedMap={setHasClickedMap} />
                   </MapContainer>
                 </div>
                 {pin && <p className="text-xs mt-1.5 font-mono" style={{ color:'#1D9E75' }}>{pin[0].toFixed(5)}, {pin[1].toFixed(5)}</p>}

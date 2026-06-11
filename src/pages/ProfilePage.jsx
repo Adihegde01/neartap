@@ -165,10 +165,6 @@ export default function ProfilePage() {
               </p>
               <p>
                 Users can confirm whether taps are functional, report water quality/pressure issues, or submit newly discovered taps directly on the map.
-              </p>
-              <p className="text-xs text-gray-500 pt-2 border-t border-white/5">
-                Built with React, Leaflet, Tailwind CSS, Go (Golang) and Firebase.
-              </p>
             </div>
             <button onClick={() => setShowAbout(false)} className="w-full btn-primary mt-6 py-3">Got it</button>
           </div>
