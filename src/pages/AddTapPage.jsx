@@ -43,7 +43,7 @@ function FieldLabel({ children }) {
 export default function AddTapPage() {
   const navigate = useNavigate();
   const { user, signIn, addTap, location, mapCenter } = useApp();
-  const [form, setForm] = useState({ name:'', address:'', hours:'24/7', customHours:'', isFree:false, paymentMethods:[], isAccessible:false, waterQuality:'Municipal', description:'' });
+  const [form, setForm] = useState({ name:'', address:'', hours:'24/7', customHours:'', isFree:false, paymentMethods:[], waterQuality:'Municipal', description:'' });
   const [pin, setPin]           = useState(location || mapCenter);
   const [hasClickedMap, setHasClickedMap] = useState(false);
   const [photo, setPhoto]       = useState(null);
@@ -114,7 +114,7 @@ export default function AddTapPage() {
 
     await new Promise(r => setTimeout(r, 800));
     const hours = form.hours === 'Custom' ? (form.customHours || '24/7') : form.hours;
-    addTap({ name:form.name.trim(), address:form.address.trim(), lat:finalPin[0], lng:finalPin[1], hours, isFree:form.isFree, paymentMethods:form.isFree ? [] : form.paymentMethods, isAccessible:form.isAccessible, waterQuality:form.waterQuality, description:form.description.trim(), photos: photo ? [photo] : [] });
+    addTap({ name:form.name.trim(), address:form.address.trim(), lat:finalPin[0], lng:finalPin[1], hours, isFree:form.isFree, paymentMethods:form.isFree ? [] : form.paymentMethods, waterQuality:form.waterQuality, description:form.description.trim(), photos: photo ? [photo] : [] });
     setLoading(false); setSuccess(true);
     setTimeout(() => navigate('/'), 1800);
   };
@@ -251,18 +251,16 @@ export default function AddTapPage() {
               </div>
 
                {/* Toggles */}
-              <div className="grid grid-cols-2 gap-3">
-                {[{k:'isFree',l:'Free to use'},{k:'isAccessible',l:'Wheelchair'}].map(({k,l})=>(
-                  <button key={k} type="button" onClick={()=>set(k,!form[k])}
-                    className="flex items-center justify-center gap-2 py-3 rounded-2xl text-xs font-medium transition-all"
-                    style={{ background: form[k]?'rgba(29,158,117,0.15)':'#1b2131', border:`1px solid ${form[k]?'rgba(29,158,117,0.4)':'rgba(255,255,255,0.08)'}`, color: form[k]?'#4dd6a3':'#9ca3af' }}>
-                    <div className="w-4 h-4 rounded border-2 flex items-center justify-center transition-all"
-                      style={{ background:form[k]?'#1D9E75':'transparent', borderColor:form[k]?'#1D9E75':'#4b5563' }}>
-                      {form[k]&&<svg viewBox="0 0 10 8" className="w-2.5" fill="none"><path d="M1 4l3 3 5-6" stroke="white" strokeWidth="1.5" strokeLinecap="round"/></svg>}
-                    </div>
-                    {l}
-                  </button>
-                ))}
+              <div>
+                <button type="button" onClick={()=>set('isFree',!form.isFree)}
+                  className="flex items-center justify-center gap-2 py-3 w-full rounded-2xl text-xs font-medium transition-all"
+                  style={{ background: form.isFree?'rgba(29,158,117,0.15)':'#1b2131', border:`1px solid ${form.isFree?'rgba(29,158,117,0.4)':'rgba(255,255,255,0.08)'}`, color: form.isFree?'#4dd6a3':'#9ca3af' }}>
+                  <div className="w-4 h-4 rounded border-2 flex items-center justify-center transition-all"
+                    style={{ background:form.isFree?'#1D9E75':'transparent', borderColor:form.isFree?'#1D9E75':'#4b5563' }}>
+                    {form.isFree && <svg viewBox="0 0 10 8" className="w-2.5" fill="none"><path d="M1 4l3 3 5-6" stroke="white" strokeWidth="1.5" strokeLinecap="round"/></svg>}
+                  </div>
+                  Free to use
+                </button>
               </div>
 
               {/* Payment Methods sub-selector */}

@@ -15,7 +15,6 @@ export default function AdminDashboardPage() {
   const [editHours, setEditHours] = useState('24/7');
   const [editIsFree, setEditIsFree] = useState(false);
   const [editPaymentMethods, setEditPaymentMethods] = useState([]);
-  const [editIsAccessible, setEditIsAccessible] = useState(true);
   const [editWaterQuality, setEditWaterQuality] = useState('safe');
   const [editDescription, setEditDescription] = useState('');
 
@@ -50,7 +49,6 @@ export default function AdminDashboardPage() {
     setEditHours(tap.hours || '24/7');
     setEditIsFree(tap.isFree || false);
     setEditPaymentMethods(tap.paymentMethods || []);
-    setEditIsAccessible(tap.isAccessible != null ? tap.isAccessible : true);
     setEditWaterQuality(tap.waterQuality || 'safe');
     setEditDescription(tap.description || '');
   };
@@ -67,7 +65,6 @@ export default function AdminDashboardPage() {
       hours: editHours,
       isFree: editIsFree,
       paymentMethods: editIsFree ? [] : editPaymentMethods,
-      isAccessible: editIsAccessible,
       waterQuality: editWaterQuality,
       description: editDescription,
     });
@@ -394,19 +391,6 @@ export default function AdminDashboardPage() {
                   />
                 </div>
 
-                {/* Accessible Toggle */}
-                <div className="flex items-center justify-between p-3 rounded-xl" style={{ background: '#141820', border: '1px solid rgba(255,255,255,0.06)' }}>
-                  <div>
-                    <p className="font-bold text-white">Wheelchair Accessible</p>
-                    <p className="text-[10px] text-gray-400">Ramps / ground level</p>
-                  </div>
-                  <input
-                    type="checkbox"
-                    checked={editIsAccessible}
-                    onChange={(e) => setEditIsAccessible(e.target.checked)}
-                    className="w-4 h-4 rounded text-teal-500 focus:ring-teal-400"
-                  />
-                </div>
               </div>
 
               {/* Payment selection panel, only visible if not free */}

@@ -1,4 +1,4 @@
-import { ShieldCheck, ShieldAlert, Droplets, Accessibility, Clock } from 'lucide-react';
+import { ShieldCheck, ShieldAlert, Droplets, Clock } from 'lucide-react';
 
 export function BadgeVerified({ confirmed }) {
   return confirmed ? (
@@ -42,15 +42,6 @@ export function BadgeFree({ isFree }) {
   );
 }
 
-export function BadgeAccessible({ isAccessible }) {
-  if (!isAccessible) return null;
-  return (
-    <span className="badge-blue">
-      <Accessibility className="w-3 h-3" />
-      Accessible
-    </span>
-  );
-}
 
 export function HoursBadge({ hours }) {
   return (

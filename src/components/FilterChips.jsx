@@ -4,7 +4,6 @@ const FILTERS = [
   { id: 'all',        label: 'All'               },
   { id: 'open',       label: 'Open now'          },
   { id: 'verified',   label: 'Verified safe'     },
-  { id: 'accessible', label: 'Wheelchair access' },
   { id: 'free',       label: 'Free'              },
 ];
 

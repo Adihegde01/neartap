@@ -137,7 +137,6 @@ export function AppProvider({ children }) {
     if (activeFilters.includes('open'))       passesFilter = passesFilter || tap.isOpenNow;
     if (activeFilters.includes('verified'))   passesFilter = passesFilter || tap.isVerified;
     if (activeFilters.includes('free'))       passesFilter = passesFilter || tap.isFree;
-    if (activeFilters.includes('accessible')) passesFilter = passesFilter || tap.isAccessible;
 
     if (!passesFilter) return false;
 
