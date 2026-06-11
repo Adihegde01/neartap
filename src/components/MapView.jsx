@@ -101,7 +101,7 @@ function MapControls() {
   };
 
   return (
-    <div className="absolute bottom-24 md:bottom-8 right-4 md:right-6 z-[1000] flex flex-col gap-3">
+    <div className="absolute bottom-36 md:bottom-8 right-4 md:right-6 z-[1000] flex flex-col gap-3">
       {/* Relocate/Compass Button */}
       <button
         onClick={handleRelocate}
