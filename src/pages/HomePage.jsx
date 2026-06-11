@@ -190,21 +190,7 @@ export default function HomePage() {
         )}
       </div>
 
-      {/* ── Locate Me Button ── */}
-      <div className="absolute bottom-24 md:bottom-8 right-4 z-[1000]">
-        <button
-          onClick={requestLocation}
-          title="Find my location"
-          className="w-12 h-12 flex items-center justify-center rounded-2xl shadow-lg transition-all duration-200 hover:scale-105 active:scale-95"
-          style={{
-            background: '#FFFFFF',
-            border: '1px solid #E2E8F0',
-            boxShadow: '0 4px 16px rgba(0,0,0,0.08)',
-          }}
-        >
-          <Locate className="w-5 h-5" style={{ color: '#2563EB' }} />
-        </button>
-      </div>
+
 
       {/* ── Location Error Toast ── */}
       {locationError && (
