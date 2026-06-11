@@ -13,39 +13,22 @@ L.Icon.Default.mergeOptions({
 });
 
 /* ── Premium tap pin ── */
-function tapIcon(isOpen, isVerified) {
+function tapIcon(isOpen) {
   const bg   = isOpen ? 'linear-gradient(135deg,#1D9E75,#0e7a5a)' : 'linear-gradient(135deg,#374151,#1f2937)';
   const glow = isOpen ? '0 0 16px rgba(29,158,117,0.6), 0 4px 16px rgba(0,0,0,0.5)' : '0 4px 12px rgba(0,0,0,0.4)';
-  const ring = isVerified && isOpen ? '3px solid rgba(52,211,153,0.5)' : '2.5px solid rgba(255,255,255,0.15)';
   return L.divIcon({
     className: '',
     html: `
       <div style="
-        position:relative;
-        width:42px; height:42px;
+        width:42px; height:42px; border-radius:50%;
+        background:${bg};
+        box-shadow:${glow};
+        border:2.5px solid rgba(255,255,255,0.15);
+        display:flex; align-items:center; justify-content:center;
       ">
-        <div style="
-          width:42px; height:42px; border-radius:50%;
-          background:${bg};
-          box-shadow:${glow};
-          border:${ring};
-          display:flex; align-items:center; justify-content:center;
-          transition: transform 0.2s;
-        ">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="white" opacity="0.95">
-            <path d="M12 2C12 2 5 10 5 15a7 7 0 0014 0C19 10 12 2 12 2z"/>
-          </svg>
-        </div>
-        ${isVerified ? `<div style="
-          position:absolute; bottom:-1px; right:-1px;
-          width:14px; height:14px; border-radius:50%;
-          background:#3b82f6; border:2px solid #0b0e14;
-          display:flex; align-items:center; justify-content:center;
-        ">
-          <svg width="8" height="8" viewBox="0 0 10 8" fill="none">
-            <path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-          </svg>
-        </div>` : ''}
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="white" opacity="0.95">
+          <path d="M12 2C12 2 5 10 5 15a7 7 0 0014 0C19 10 12 2 12 2z"/>
+        </svg>
       </div>`,
     iconSize:    [42, 42],
     iconAnchor:  [21, 42],
@@ -134,7 +117,7 @@ export default function MapView() {
         <Marker
           key={tap.id}
           position={[tap.lat, tap.lng]}
-          icon={tapIcon(tap.isOpenNow ?? tap.isOpen, tap.isVerified)}
+          icon={tapIcon(tap.isOpenNow ?? tap.isOpen)}
         >
           <Popup
             className="neartap-popup"
