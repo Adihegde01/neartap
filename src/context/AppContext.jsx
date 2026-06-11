@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { auth, signInWithGoogle, signOutUser } from '../firebase';
+import { auth, signInWithGoogle, signOutUser, db, doc, getDoc } from '../firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import { MOCK_TAPS, calcDistance, isOpenNow } from '../data/mockTaps';
 import * as api from '../api/client';
@@ -41,17 +41,41 @@ export function AppProvider({ children }) {
   // Auth listener
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, async (u) => {
-      setUser(u);
       if (u) {
         try {
           const token = await u.getIdToken();
           setIdToken(token);
+
+          // Query the 'admins' collection in Firestore using the user's email
+          let role = 'user';
+          try {
+            const adminDocRef = doc(db, 'admins', u.email.toLowerCase());
+            const adminSnap = await getDoc(adminDocRef);
+            if (adminSnap.exists()) {
+              role = 'admin';
+            }
+          } catch (dbErr) {
+            console.warn('Failed to query admins collection in Firestore:', dbErr);
+          }
+
+          const userWithRole = {
+            uid: u.uid,
+            displayName: u.displayName,
+            email: u.email,
+            photoURL: u.photoURL,
+            role: role
+          };
+          setUser(userWithRole);
+          localStorage.setItem('neartap_logged_user', JSON.stringify(userWithRole));
         } catch (e) {
-          console.error('Failed to get ID token:', e);
+          console.error('Failed to process auth state:', e);
           setIdToken('demo');
+          setUser(u);
         }
       } else {
         setIdToken('demo');
+        setUser(null);
+        localStorage.removeItem('neartap_logged_user');
       }
       setAuthLoading(false);
     });
