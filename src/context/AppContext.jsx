@@ -42,42 +42,45 @@ export function AppProvider({ children }) {
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, async (u) => {
       if (u) {
+        // Immediately set basic user info so the UI reflects login right away
+        const immediateUser = {
+          uid: u.uid,
+          displayName: u.displayName,
+          email: u.email,
+          photoURL: u.photoURL,
+          role: 'user'
+        };
+        setUser(immediateUser);
+        localStorage.setItem('neartap_logged_user', JSON.stringify(immediateUser));
+        setAuthLoading(false);
+
+        // Resolve token and admin role in the background (non-blocking)
         try {
           const token = await u.getIdToken();
           setIdToken(token);
 
-          // Query the 'admins' collection in Firestore using the user's email
           let role = 'user';
           try {
             const adminDocRef = doc(db, 'admins', u.email.toLowerCase());
             const adminSnap = await getDoc(adminDocRef);
-            if (adminSnap.exists()) {
-              role = 'admin';
-            }
+            if (adminSnap.exists()) role = 'admin';
           } catch (dbErr) {
             console.warn('Failed to query admins collection in Firestore:', dbErr);
           }
 
-          const userWithRole = {
-            uid: u.uid,
-            displayName: u.displayName,
-            email: u.email,
-            photoURL: u.photoURL,
-            role: role
-          };
+          const userWithRole = { ...immediateUser, role };
           setUser(userWithRole);
           localStorage.setItem('neartap_logged_user', JSON.stringify(userWithRole));
         } catch (e) {
-          console.error('Failed to process auth state:', e);
+          console.error('Failed to process auth token/role:', e);
           setIdToken('demo');
-          setUser(u);
         }
       } else {
         setIdToken('demo');
         setUser(null);
         localStorage.removeItem('neartap_logged_user');
+        setAuthLoading(false);
       }
-      setAuthLoading(false);
     });
     return unsub;
   }, []);
