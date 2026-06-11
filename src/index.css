@@ -138,8 +138,8 @@
   }
 }
 
-/* ── Leaflet — dark premium map ── */
-.leaflet-container { background: #0b0e14 !important; font-family: 'Inter', sans-serif !important; }
+/* ── Leaflet — light premium map ── */
+.leaflet-container { background: #e8f4f0 !important; font-family: 'Inter', sans-serif !important; }
 .leaflet-tile-pane { filter: none; }
 .leaflet-control-zoom {
   border: 1px solid rgba(255,255,255,0.08) !important;
