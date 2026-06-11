@@ -4,7 +4,7 @@ import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
 import { useApp } from '../context/AppContext';
 import {
-  ArrowLeft, MapPin, Clock, Droplets, Camera,
+  MapPin, Clock, Droplets, Camera,
   CheckSquare, Loader2, ChevronDown
 } from 'lucide-react';
 
@@ -124,9 +124,6 @@ export default function AddTapPage() {
       {/* Header */}
       <div className="flex items-center gap-3 px-4 pt-10 pb-4 md:py-8 flex-shrink-0" style={{ background: 'linear-gradient(135deg, #2563EB, #1D4ED8)' }}>
         <div className="max-w-3xl mx-auto w-full flex items-center gap-3">
-          <button onClick={() => navigate(-1)} className="p-2 rounded-xl transition-all active:scale-95" style={{ background:'rgba(255,255,255,0.15)' }}>
-            <ArrowLeft className="w-5 h-5 text-white" />
-          </button>
           <div>
             <h1 className="font-bold text-white text-lg">Add a Tap</h1>
             <p className="text-xs" style={{ color:'rgba(255,255,255,0.75)' }}>Help others find clean water</p>
