@@ -12,45 +12,45 @@ L.Icon.Default.mergeOptions({
   shadowUrl:     'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
 });
 
-/* ── Premium tap pin ── */
+/* ── Blue tap pin ── */
 function tapIcon(isOpen) {
-  const bg   = isOpen ? 'linear-gradient(135deg,#1D9E75,#0e7a5a)' : 'linear-gradient(135deg,#374151,#1f2937)';
-  const glow = isOpen ? '0 0 16px rgba(29,158,117,0.6), 0 4px 16px rgba(0,0,0,0.5)' : '0 4px 12px rgba(0,0,0,0.4)';
+  const bg   = isOpen ? 'linear-gradient(135deg,#2563EB,#1D4ED8)' : 'linear-gradient(135deg,#94A3B8,#64748B)';
+  const glow = isOpen ? '0 0 14px rgba(37,99,235,0.5), 0 4px 12px rgba(0,0,0,0.15)' : '0 4px 8px rgba(0,0,0,0.12)';
   return L.divIcon({
     className: '',
     html: `
       <div style="
-        width:42px; height:42px; border-radius:50%;
+        width:40px; height:40px; border-radius:50%;
         background:${bg};
         box-shadow:${glow};
-        border:2.5px solid rgba(255,255,255,0.15);
+        border:3px solid white;
         display:flex; align-items:center; justify-content:center;
       ">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="white" opacity="0.95">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="white" opacity="0.95">
           <path d="M12 2C12 2 5 10 5 15a7 7 0 0014 0C19 10 12 2 12 2z"/>
         </svg>
       </div>`,
-    iconSize:    [42, 42],
-    iconAnchor:  [21, 42],
-    popupAnchor: [0, -48],
+    iconSize:    [40, 40],
+    iconAnchor:  [20, 40],
+    popupAnchor: [0, -46],
   });
 }
 
-/* ── Premium "You" dot ── */
+/* ── "You" blue dot ── */
 const youIcon = L.divIcon({
   className: '',
   html: `
-    <div style="position:relative; width:22px; height:22px;">
+    <div style="position:relative; width:20px; height:20px;">
       <div style="
         position:absolute; inset:-6px; border-radius:50%;
-        background:rgba(59,130,246,0.15);
+        background:rgba(37,99,235,0.15);
         animation: ping 1.8s cubic-bezier(0,0,0.2,1) infinite;
       "></div>
       <div style="
-        width:22px; height:22px; border-radius:50%;
-        background:linear-gradient(135deg,#3b82f6,#2563eb);
+        width:20px; height:20px; border-radius:50%;
+        background:linear-gradient(135deg,#2563EB,#1D4ED8);
         border:3px solid white;
-        box-shadow:0 0 0 3px rgba(59,130,246,0.3), 0 4px 14px rgba(0,0,0,0.4);
+        box-shadow:0 0 0 3px rgba(37,99,235,0.2), 0 4px 12px rgba(0,0,0,0.15);
         position:relative; z-index:1;
       "></div>
     </div>
@@ -61,8 +61,8 @@ const youIcon = L.divIcon({
         100% { transform: scale(0.8); opacity:0; }
       }
     </style>`,
-  iconSize:   [22, 22],
-  iconAnchor: [11, 11],
+  iconSize:   [20, 20],
+  iconAnchor: [10, 10],
 });
 
 function MapSync({ center, zoom }) {
@@ -83,7 +83,6 @@ export default function MapView() {
       zoomControl={false}
       attributionControl={false}
     >
-      {/* Light premium tile layer */}
       <TileLayer
         url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
         attribution='&copy; <a href="https://carto.com/">CARTO</a>'
@@ -101,10 +100,10 @@ export default function MapView() {
             center={location}
             radius={500}
             pathOptions={{
-              color: '#3b82f6',
-              fillColor: '#3b82f6',
+              color: '#2563EB',
+              fillColor: '#2563EB',
               fillOpacity: 0.06,
-              weight: 1,
+              weight: 1.5,
               opacity: 0.3,
               dashArray: '6 4'
             }}
@@ -119,19 +118,17 @@ export default function MapView() {
           position={[tap.lat, tap.lng]}
           icon={tapIcon(tap.isOpenNow ?? tap.isOpen)}
         >
-          <Popup
-            className="neartap-popup"
-            closeButton={false}
-          >
+          <Popup className="neartap-popup" closeButton={false}>
             <div
               onClick={() => navigate(`/tap/${tap.id}`)}
               style={{
                 minWidth: '220px',
                 cursor: 'pointer',
-                background: 'rgba(10,13,20,0.97)',
+                background: '#FFFFFF',
                 borderRadius: '16px',
                 padding: '14px 16px',
-                border: '1px solid rgba(255,255,255,0.08)',
+                border: '1px solid #E2E8F0',
+                boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
                 fontFamily: 'inherit',
               }}
             >
@@ -139,53 +136,43 @@ export default function MapView() {
               <div style={{ display:'flex', alignItems:'flex-start', gap:'8px', marginBottom:'8px' }}>
                 <div style={{
                   width:'8px', height:'8px', borderRadius:'50%', marginTop:'4px', flexShrink:0,
-                  background: (tap.isOpenNow ?? tap.isOpen) ? '#10b981' : '#6b7280',
-                  boxShadow: (tap.isOpenNow ?? tap.isOpen) ? '0 0 6px rgba(16,185,129,0.6)' : 'none'
+                  background: (tap.isOpenNow ?? tap.isOpen) ? '#10B981' : '#94A3B8',
+                  boxShadow: (tap.isOpenNow ?? tap.isOpen) ? '0 0 6px rgba(16,185,129,0.5)' : 'none'
                 }} />
                 <div>
-                  <p style={{ fontWeight:700, color:'#fff', fontSize:'13px', margin:0, lineHeight:'1.3' }}>{tap.name}</p>
-                  <p style={{ color:'#4b5563', fontSize:'11px', margin:'3px 0 0', lineHeight:'1.4' }}>{tap.address}</p>
+                  <p style={{ fontWeight:700, color:'#0F172A', fontSize:'13px', margin:0, lineHeight:'1.3' }}>{tap.name}</p>
+                  <p style={{ color:'#94A3B8', fontSize:'11px', margin:'3px 0 0', lineHeight:'1.4' }}>{tap.address}</p>
                 </div>
               </div>
 
               {/* Badges */}
               <div style={{ display:'flex', gap:'5px', flexWrap:'wrap', marginBottom:'10px' }}>
                 <span style={{
-                  background: (tap.isOpenNow ?? tap.isOpen) ? 'rgba(16,185,129,0.15)' : 'rgba(107,114,128,0.15)',
-                  color: (tap.isOpenNow ?? tap.isOpen) ? '#34d399' : '#9ca3af',
+                  background: (tap.isOpenNow ?? tap.isOpen) ? 'rgba(16,185,129,0.1)' : '#F1F5F9',
+                  color: (tap.isOpenNow ?? tap.isOpen) ? '#059669' : '#94A3B8',
                   fontSize:'10px', padding:'3px 8px', borderRadius:'99px',
-                  border: `1px solid ${(tap.isOpenNow ?? tap.isOpen) ? 'rgba(16,185,129,0.25)' : 'rgba(107,114,128,0.2)'}`,
+                  border: `1px solid ${(tap.isOpenNow ?? tap.isOpen) ? 'rgba(16,185,129,0.2)' : '#E2E8F0'}`,
                   fontWeight: 600,
                 }}>
                   {(tap.isOpenNow ?? tap.isOpen) ? '● Open' : '● Closed'}
                 </span>
                 <span style={{
-                  background: tap.isFree ? 'rgba(20,184,166,0.15)' : 'rgba(245,158,11,0.12)',
-                  color: tap.isFree ? '#5eead4' : '#fbbf24',
+                  background: tap.isFree ? 'rgba(37,99,235,0.08)' : 'rgba(245,158,11,0.08)',
+                  color: tap.isFree ? '#2563EB' : '#D97706',
                   fontSize:'10px', padding:'3px 8px', borderRadius:'99px',
-                  border: `1px solid ${tap.isFree ? 'rgba(20,184,166,0.25)' : 'rgba(245,158,11,0.2)'}`,
+                  border: `1px solid ${tap.isFree ? 'rgba(37,99,235,0.15)' : 'rgba(245,158,11,0.2)'}`,
                   fontWeight: 600,
                 }}>
                   {tap.isFree ? 'Free' : 'Paid'}
                 </span>
-                {tap.isVerified && (
-                  <span style={{
-                    background:'rgba(59,130,246,0.15)', color:'#93c5fd',
-                    fontSize:'10px', padding:'3px 8px', borderRadius:'99px',
-                    border:'1px solid rgba(59,130,246,0.25)', fontWeight:600,
-                  }}>✓ Verified</span>
-                )}
               </div>
 
               {/* Footer */}
               <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between' }}>
                 {tap.distance != null ? (
-                  <span style={{ color:'#1D9E75', fontSize:'11px', fontWeight:700 }}>{formatDistance(tap.distance)}</span>
+                  <span style={{ color:'#2563EB', fontSize:'11px', fontWeight:700 }}>{formatDistance(tap.distance)}</span>
                 ) : <span />}
-                <span style={{
-                  color:'#1D9E75', fontSize:'11px', fontWeight:700,
-                  display:'flex', alignItems:'center', gap:'3px'
-                }}>
+                <span style={{ color:'#2563EB', fontSize:'11px', fontWeight:700 }}>
                   View details →
                 </span>
               </div>

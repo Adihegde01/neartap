@@ -48,9 +48,9 @@ export default function LeaderboardPage() {
   const maxVal = Math.max(...list.map(item => sortBy === 'impact' ? item.impact : item.tapsCount), 1);
 
   return (
-    <div className="page-enter flex flex-col min-h-screen pb-24 md:pb-8" style={{ background: '#141820' }}>
+    <div className="page-enter flex flex-col min-h-screen pb-24 md:pb-8" style={{ background: '#F1F5F9' }}>
       {/* Header */}
-      <div className="px-6 pt-10 pb-6 flex-shrink-0" style={{ background: '#1D9E75' }}>
+      <div className="px-6 pt-10 pb-6 flex-shrink-0" style={{ background: 'linear-gradient(135deg, #2563EB, #1D4ED8)' }}>
         <div className="max-w-3xl mx-auto w-full flex items-center gap-3">
           <div className="w-12 h-12 rounded-2xl flex items-center justify-center bg-white/10 shadow-lg">
             <Trophy className="w-6 h-6 text-white" />
@@ -65,12 +65,13 @@ export default function LeaderboardPage() {
       {/* Content */}
       <div className="flex-1 px-4 pt-5 max-w-3xl mx-auto w-full space-y-4">
         {/* Toggle Sorting */}
-        <div className="flex p-1 rounded-2xl" style={{ background: '#1b2131', border: '1px solid rgba(255,255,255,0.06)' }}>
+        <div className="flex p-1 rounded-2xl bg-white border border-slate-200 shadow-sm">
           <button
             onClick={() => setSortBy('impact')}
             className={`flex-1 py-3 text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-1.5 ${
-              sortBy === 'impact' ? 'bg-[#1D9E75] text-white shadow-lg' : 'text-gray-400 hover:text-white'
+              sortBy === 'impact' ? 'text-white shadow-md' : 'text-slate-500 hover:text-slate-800'
             }`}
+            style={sortBy === 'impact' ? { background: 'linear-gradient(135deg, #2563EB, #1D4ED8)' } : {}}
           >
             <Flame className="w-3.5 h-3.5" />
             Sort by Impact
@@ -78,8 +79,9 @@ export default function LeaderboardPage() {
           <button
             onClick={() => setSortBy('taps')}
             className={`flex-1 py-3 text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-1.5 ${
-              sortBy === 'taps' ? 'bg-[#1D9E75] text-white shadow-lg' : 'text-gray-400 hover:text-white'
+              sortBy === 'taps' ? 'text-white shadow-md' : 'text-slate-500 hover:text-slate-800'
             }`}
+            style={sortBy === 'taps' ? { background: 'linear-gradient(135deg, #2563EB, #1D4ED8)' } : {}}
           >
             <Droplet className="w-3.5 h-3.5" />
             Sort by Taps Added
@@ -87,7 +89,7 @@ export default function LeaderboardPage() {
         </div>
 
         {/* Leaderboard List */}
-        <div className="rounded-3xl overflow-hidden divide-y divide-white/5" style={{ background: '#1b2131', border: '1px solid rgba(255,255,255,0.06)' }}>
+        <div className="rounded-3xl overflow-hidden divide-y divide-slate-100 bg-white border border-slate-200 shadow-sm">
           {list.map((item, index) => {
             const isCurrentUser = user && item.uid === user.uid;
             const rankVal = index + 1;
@@ -95,7 +97,7 @@ export default function LeaderboardPage() {
             const score = sortBy === 'impact' ? item.impact : item.tapsCount;
             const progressPct = (score / maxVal) * 100;
 
-            let rankBadge = <span className="text-gray-500 font-bold">{rankVal}</span>;
+            let rankBadge = <span className="text-slate-400 font-bold">{rankVal}</span>;
             if (rankVal === 1) rankBadge = <span className="text-2xl">🥇</span>;
             if (rankVal === 2) rankBadge = <span className="text-2xl">🥈</span>;
             if (rankVal === 3) rankBadge = <span className="text-2xl">🥉</span>;
@@ -104,7 +106,7 @@ export default function LeaderboardPage() {
               <div
                 key={item.uid}
                 className={`flex flex-col p-4 transition-all relative ${
-                  isCurrentUser ? 'bg-teal-500/5' : ''
+                  isCurrentUser ? 'bg-blue-50/30' : ''
                 }`}
               >
                 {/* Main Row */}
@@ -113,39 +115,39 @@ export default function LeaderboardPage() {
                     <div className="w-8 flex items-center justify-center">{rankBadge}</div>
                     
                     {/* User Avatar */}
-                    <div className="w-10 h-10 rounded-xl overflow-hidden border border-white/10 flex-shrink-0 bg-white/5 flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-xl overflow-hidden border border-slate-200 flex-shrink-0 bg-slate-50 flex items-center justify-center">
                       {item.photoURL ? (
                         <img src={item.photoURL} alt={item.name} className="w-full h-full object-cover" />
                       ) : (
-                        <User className="w-5 h-5 text-gray-500" />
+                        <User className="w-5 h-5 text-slate-400" />
                       )}
                     </div>
 
                     <div>
-                      <h4 className={`text-sm font-bold ${isCurrentUser ? 'text-teal-400' : 'text-white'}`}>
-                        {item.name} {isCurrentUser && <span className="text-[10px] bg-teal-500/20 text-teal-400 px-1.5 py-0.5 rounded-full ml-1 font-semibold">YOU</span>}
+                      <h4 className={`text-sm font-bold ${isCurrentUser ? 'text-blue-600' : 'text-slate-800'}`}>
+                        {item.name} {isCurrentUser && <span className="text-[9px] bg-blue-100 text-blue-600 px-1.5 py-0.5 rounded-full ml-1 font-semibold">YOU</span>}
                       </h4>
-                      <p className="text-xs text-gray-500">
+                      <p className="text-xs text-slate-500">
                         {item.tapsCount} tap{item.tapsCount !== 1 ? 's' : ''} added • {item.verifiedCount} verified
                       </p>
                     </div>
                   </div>
 
                   <div className="text-right">
-                    <span className="text-base font-black text-white">{score}</span>
-                    <span className="text-[10px] text-gray-500 block font-semibold uppercase tracking-wider">
+                    <span className="text-base font-black text-slate-800">{score}</span>
+                    <span className="text-[10px] text-slate-400 block font-semibold uppercase tracking-wider">
                       {sortBy === 'impact' ? 'Impact' : 'Taps'}
                     </span>
                   </div>
                 </div>
 
                 {/* Progress bar representing share of contributions */}
-                <div className="w-full h-1 mt-3 rounded-full bg-white/5 overflow-hidden">
+                <div className="w-full h-1 mt-3 rounded-full bg-slate-100 overflow-hidden">
                   <div
                     className="h-full rounded-full transition-all duration-500"
                     style={{
                       width: `${progressPct}%`,
-                      background: isTop3 ? 'linear-gradient(90deg, #1D9E75, #4dd6a3)' : '#4b5563',
+                      background: isTop3 ? 'linear-gradient(90deg, #2563EB, #60A5FA)' : '#CBD5E1',
                     }}
                   />
                 </div>

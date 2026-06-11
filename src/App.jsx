@@ -56,7 +56,7 @@ function AppContent() {
   return (
     <div
       className="relative flex min-h-screen w-full overflow-x-hidden"
-      style={{ background: '#141820' }}
+      style={{ background: '#F1F5F9' }}
     >
       {/* Desktop Navigation Side Rail */}
       <DesktopNavRail />
@@ -80,17 +80,17 @@ function AppContent() {
 
       {/* Persistent Mock Authentication Modal Overlay */}
       {showMockLogin && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-fade-in">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-fade-in">
           <div
             className="w-full max-w-md rounded-3xl p-6 relative animate-scale-up"
-            style={{ background: '#1b2131', border: '1px solid rgba(255,255,255,0.08)' }}
+            style={{ background: '#FFFFFF', border: '1px solid #E2E8F0', boxShadow: '0 20px 50px rgba(0,0,0,0.1)' }}
           >
             <button
               onClick={() => {
                 setShowMockLogin(false);
                 clearForm();
               }}
-              className="absolute top-4 right-4 text-gray-400 hover:text-white text-lg transition-colors"
+              className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-lg transition-colors"
             >
               ✕
             </button>
@@ -98,44 +98,44 @@ function AppContent() {
             {/* Header section based on selected mode */}
             {authMode === 'login' && (
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-2xl flex items-center justify-center bg-teal-500/10">
-                  <Lock className="w-5 h-5 text-teal-400" />
+                <div className="w-10 h-10 rounded-2xl flex items-center justify-center bg-blue-50">
+                  <Lock className="w-5 h-5 text-blue-600" />
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-white">Sign In</h3>
-                  <p className="text-xs text-gray-400">Access your NearTap account</p>
+                  <h3 className="text-base font-bold text-slate-900">Sign In</h3>
+                  <p className="text-xs text-slate-500">Access your Hani account</p>
                 </div>
               </div>
             )}
 
             {authMode === 'register' && (
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-2xl flex items-center justify-center bg-teal-500/10">
-                  <UserPlus className="w-5 h-5 text-teal-400" />
+                <div className="w-10 h-10 rounded-2xl flex items-center justify-center bg-blue-50">
+                  <UserPlus className="w-5 h-5 text-blue-600" />
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-white">Create Account</h3>
-                  <p className="text-xs text-gray-400">Join the water contributor network</p>
+                  <h3 className="text-base font-bold text-slate-900">Create Account</h3>
+                  <p className="text-xs text-slate-500">Join the water contributor network</p>
                 </div>
               </div>
             )}
 
             {authMode === 'forgot' && (
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-2xl flex items-center justify-center bg-teal-500/10">
-                  <KeyRound className="w-5 h-5 text-teal-400" />
+                <div className="w-10 h-10 rounded-2xl flex items-center justify-center bg-blue-50">
+                  <KeyRound className="w-5 h-5 text-blue-600" />
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-white">Reset Password</h3>
-                  <p className="text-xs text-gray-400">Reset your local account credentials</p>
+                  <h3 className="text-base font-bold text-slate-900">Reset Password</h3>
+                  <p className="text-xs text-slate-500">Reset your local account credentials</p>
                 </div>
               </div>
             )}
 
             {/* Hint message explaining local database */}
-            <div className="flex gap-2 p-3 rounded-2xl bg-white/5 border border-white/5 mb-4">
-              <Info className="w-4 h-4 text-teal-400 flex-shrink-0 mt-0.5" />
-              <p className="text-[11px] text-gray-400 leading-normal">
+            <div className="flex gap-2 p-3 rounded-2xl bg-slate-50 border border-slate-100 mb-4">
+              <Info className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" />
+              <p className="text-[11px] text-slate-500 leading-normal">
                 {authMode === 'forgot'
                   ? "Enter your email address and specify a new password to reset it in your local browser database."
                   : "Google OAuth is unconfigured. The app is running on a secure local browser database. You can register new accounts or sign in using seed accounts."}
@@ -144,12 +144,12 @@ function AppContent() {
 
             {/* Error & Success Messages */}
             {errorMsg && (
-              <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-xs text-rose-300 mb-4">
+              <div className="p-3 rounded-xl bg-red-50 border border-red-100 text-xs text-red-600 mb-4">
                 ⚠️ {errorMsg}
               </div>
             )}
             {successMsg && (
-              <div className="p-3 rounded-xl bg-teal-500/10 border border-teal-500/20 text-xs text-teal-300 mb-4">
+              <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-100 text-xs text-emerald-600 mb-4">
                 ✨ {successMsg}
               </div>
             )}
@@ -158,35 +158,33 @@ function AppContent() {
             <form onSubmit={handleAuthSubmit} className="space-y-4">
               {authMode === 'register' && (
                 <div>
-                  <label className="block text-xs font-semibold text-gray-400 mb-1.5 uppercase tracking-wider">Full Name</label>
+                  <label className="block text-xs font-semibold text-slate-500 mb-1.5 uppercase tracking-wider">Full Name</label>
                   <input
                     type="text"
                     required
                     placeholder="e.g. Vikram Rao"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="w-full px-4 py-3 rounded-xl text-sm text-white focus:outline-none transition-all placeholder:text-gray-600"
-                    style={{ background: '#141820', border: '1px solid rgba(255,255,255,0.06)' }}
+                    className="w-full px-4 py-3 rounded-xl text-sm text-slate-900 bg-slate-50 border border-slate-200 focus:outline-none focus:border-blue-500 transition-all placeholder:text-slate-400"
                   />
                 </div>
               )}
 
               <div>
-                <label className="block text-xs font-semibold text-gray-400 mb-1.5 uppercase tracking-wider">Email Address</label>
+                <label className="block text-xs font-semibold text-slate-500 mb-1.5 uppercase tracking-wider">Email Address</label>
                 <input
                   type="email"
                   required
-                  placeholder="e.g. aarav.sharma@neartap.org"
+                  placeholder="e.g. aarav.sharma@hani.org"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl text-sm text-white focus:outline-none transition-all placeholder:text-gray-600"
-                  style={{ background: '#141820', border: '1px solid rgba(255,255,255,0.06)' }}
+                  className="w-full px-4 py-3 rounded-xl text-sm text-slate-900 bg-slate-50 border border-slate-200 focus:outline-none focus:border-blue-500 transition-all placeholder:text-slate-400"
                 />
               </div>
 
               <div>
                 <div className="flex justify-between items-center mb-1.5">
-                  <label className="block text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                  <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider">
                     {authMode === 'forgot' ? 'New Password' : 'Password'}
                   </label>
                   {authMode === 'login' && (
@@ -197,7 +195,7 @@ function AppContent() {
                         setErrorMsg('');
                         setSuccessMsg('');
                       }}
-                      className="text-xs text-teal-400 hover:text-teal-300"
+                      className="text-xs text-blue-600 hover:text-blue-700 font-semibold"
                     >
                       Forgot password?
                     </button>
@@ -209,8 +207,7 @@ function AppContent() {
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl text-sm text-white focus:outline-none transition-all placeholder:text-gray-600"
-                  style={{ background: '#141820', border: '1px solid rgba(255,255,255,0.06)' }}
+                  className="w-full px-4 py-3 rounded-xl text-sm text-slate-900 bg-slate-50 border border-slate-200 focus:outline-none focus:border-blue-500 transition-all placeholder:text-slate-400"
                 />
               </div>
 
@@ -225,7 +222,7 @@ function AppContent() {
             </form>
 
             {/* Mode Switchers */}
-            <div className="mt-5 text-center text-xs text-gray-400 border-t border-white/5 pt-4">
+            <div className="mt-5 text-center text-xs text-slate-500 border-t border-slate-100 pt-4">
               {authMode === 'login' && (
                 <p>
                   Don't have an account?{' '}
@@ -234,7 +231,7 @@ function AppContent() {
                       setAuthMode('register');
                       clearForm();
                     }}
-                    className="text-teal-400 font-bold hover:text-teal-300 ml-0.5"
+                    className="text-blue-600 font-bold hover:text-blue-700 ml-0.5"
                   >
                     Register here
                   </button>
@@ -249,7 +246,7 @@ function AppContent() {
                       setAuthMode('login');
                       clearForm();
                     }}
-                    className="text-teal-400 font-bold hover:text-teal-300 ml-0.5"
+                    className="text-blue-600 font-bold hover:text-blue-700 ml-0.5"
                   >
                     Sign In here
                   </button>
@@ -262,7 +259,7 @@ function AppContent() {
                     setAuthMode('login');
                     clearForm();
                   }}
-                  className="text-teal-400 font-bold hover:text-teal-300"
+                  className="text-blue-600 font-bold hover:text-blue-700"
                 >
                   Back to Sign In
                 </button>

@@ -9,11 +9,11 @@ export default function SavedPage() {
   const saved = taps.filter(t => savedTaps.includes(t.id));
 
   return (
-    <div className="page-enter flex flex-col min-h-screen pb-24 md:pb-8" style={{ background:'#141820' }}>
+    <div className="page-enter flex flex-col min-h-screen pb-24 md:pb-8" style={{ background:'#F1F5F9' }}>
       {/* Header */}
-      <div className="px-4 pt-10 pb-5 md:py-8 flex-shrink-0" style={{ background:'#1D9E75' }}>
+      <div className="px-4 pt-10 pb-5 md:py-8 flex-shrink-0" style={{ background: 'linear-gradient(135deg, #2563EB, #1D4ED8)' }}>
         <div className="max-w-3xl mx-auto w-full flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl flex items-center justify-center" style={{ background:'rgba(0,0,0,0.15)' }}>
+          <div className="w-10 h-10 rounded-2xl flex items-center justify-center animate-fade-in" style={{ background:'rgba(255,255,255,0.15)' }}>
             <Bookmark className="w-5 h-5 text-white" />
           </div>
           <div>
@@ -25,21 +25,25 @@ export default function SavedPage() {
 
       <div className="flex-1 px-4 pt-5 max-w-3xl mx-auto w-full">
         {!user ? (
-          <div className="flex flex-col items-center justify-center py-20 text-center gap-4">
-            <div className="w-16 h-16 rounded-full flex items-center justify-center" style={{ background:'#1b2131', border:'1px solid rgba(255,255,255,0.06)' }}>
-              <Bookmark className="w-7 h-7" style={{ color:'#374151' }} />
+          <div className="flex flex-col items-center justify-center py-20 text-center gap-4 bg-white border border-slate-200 rounded-3xl shadow-sm">
+            <div className="w-16 h-16 rounded-full flex items-center justify-center bg-slate-50 border border-slate-100">
+              <Bookmark className="w-7 h-7 text-slate-400" />
             </div>
-            <h2 className="font-bold text-white text-lg">Sign in to save taps</h2>
-            <p className="text-sm" style={{ color:'#6b7280' }}>Keep track of your favourite water points</p>
+            <div>
+              <h2 className="font-bold text-slate-800 text-lg">Sign in to save taps</h2>
+              <p className="text-sm text-slate-500 mt-1">Keep track of your favourite water points</p>
+            </div>
             <button onClick={signIn} className="btn-primary">Sign in with Google</button>
           </div>
         ) : saved.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-20 text-center gap-4">
-            <div className="w-16 h-16 rounded-full flex items-center justify-center" style={{ background:'#1b2131', border:'1px solid rgba(255,255,255,0.06)' }}>
-              <Droplets className="w-7 h-7" style={{ color:'#374151' }} />
+          <div className="flex flex-col items-center justify-center py-20 text-center gap-4 bg-white border border-slate-200 rounded-3xl shadow-sm">
+            <div className="w-16 h-16 rounded-full flex items-center justify-center bg-slate-50 border border-slate-100">
+              <Droplets className="w-7 h-7 text-slate-400" />
             </div>
-            <h2 className="font-bold text-white text-lg">No saved taps yet</h2>
-            <p className="text-sm" style={{ color:'#6b7280' }}>Bookmark taps to find them quickly later</p>
+            <div>
+              <h2 className="font-bold text-slate-800 text-lg">No saved taps yet</h2>
+              <p className="text-sm text-slate-500 mt-1">Bookmark taps to find them quickly later</p>
+            </div>
             <button onClick={() => navigate('/')} className="btn-primary">Explore Taps</button>
           </div>
         ) : (

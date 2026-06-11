@@ -21,7 +21,7 @@ export default function BottomNav() {
 
   return (
     <nav
-      style={{ background: '#111520', borderTop: '1px solid rgba(255,255,255,0.07)' }}
+      style={{ background: '#FFFFFF', borderTop: '1px solid #E2E8F0' }}
       className="fixed bottom-0 left-0 right-0 z-[2000] md:hidden"
     >
       <div className="flex items-center justify-around px-2 pt-2 pb-4 max-w-lg mx-auto">
@@ -36,9 +36,9 @@ export default function BottomNav() {
                 aria-label="Add a Tap"
               >
                 <div
-                  className="w-14 h-14 rounded-full flex items-center justify-center shadow-green
+                  className="w-14 h-14 rounded-full flex items-center justify-center shadow-lg
                              border-4 transition-all duration-200 hover:brightness-110 active:scale-95"
-                  style={{ background: '#1D9E75', borderColor: '#141820' }}
+                  style={{ background: 'linear-gradient(135deg, #2563EB, #1D4ED8)', borderColor: '#FFFFFF' }}
                 >
                   {/* arrow-down-circle style icon matching the reference */}
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -46,7 +46,7 @@ export default function BottomNav() {
                     <path d="M12 8v8M8 12l4 4 4-4" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
                 </div>
-                <span style={{ fontSize: 10, fontWeight: 600, color: '#6b7280' }}>Add Tap</span>
+                <span style={{ fontSize: 10, fontWeight: 600, color: '#94A3B8' }}>Add Tap</span>
               </button>
             );
           }
@@ -59,12 +59,12 @@ export default function BottomNav() {
               key={item.path}
               onClick={() => navigate(item.path)}
               className="nav-item"
-              style={isActive ? { color: '#1D9E75' } : {}}
+              style={isActive ? { color: '#2563EB' } : {}}
             >
               <Icon
                 className="w-5 h-5 transition-colors"
                 strokeWidth={isActive ? 2.5 : 1.8}
-                color={isActive ? '#1D9E75' : '#6b7280'}
+                color={isActive ? '#2563EB' : '#94A3B8'}
               />
               <span>{item.label}</span>
             </button>

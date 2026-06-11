@@ -17,7 +17,7 @@ L.Icon.Default.mergeOptions({
 
 const pinIcon = L.divIcon({
   className:'',
-  html:`<div style="width:32px;height:32px;background:#1D9E75;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 0 12px rgba(29,158,117,0.5);border:2.5px solid white">
+  html:`<div style="width:32px;height:32px;background:#2563EB;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 0 12px rgba(37,99,235,0.5);border:2.5px solid white">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M12 2C12 2 5 10 5 15a7 7 0 0014 0C19 10 12 2 12 2z"/></svg>
   </div>`,
   iconSize:[32,32], iconAnchor:[16,32],
@@ -37,7 +37,7 @@ const HOURS = ['24/7','06:00 – 20:00','06:00 – 22:00','08:00 – 18:00','09:
 const QUALITY = ['Municipal','RO Purified','Filtered','Unknown'];
 
 function FieldLabel({ children }) {
-  return <p className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color:'#6b7280' }}>{children}</p>;
+  return <p className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color:'#64748B' }}>{children}</p>;
 }
 
 export default function AddTapPage() {
@@ -87,7 +87,7 @@ export default function AddTapPage() {
         const res = await fetch(url, {
           headers: {
             'Accept-Language': 'en',
-            'User-Agent': 'NearTap-App/1.0'
+            'User-Agent': 'Hani-App/1.0'
           }
         });
         if (res.ok) {
@@ -120,11 +120,11 @@ export default function AddTapPage() {
   };
 
   return (
-    <div className="page-enter flex flex-col min-h-screen pb-24 md:pb-8" style={{ background:'#141820' }}>
+    <div className="page-enter flex flex-col min-h-screen pb-24 md:pb-8" style={{ background:'#F1F5F9' }}>
       {/* Header */}
-      <div className="flex items-center gap-3 px-4 pt-10 pb-4 md:py-8 flex-shrink-0" style={{ background:'#1D9E75' }}>
+      <div className="flex items-center gap-3 px-4 pt-10 pb-4 md:py-8 flex-shrink-0" style={{ background: 'linear-gradient(135deg, #2563EB, #1D4ED8)' }}>
         <div className="max-w-3xl mx-auto w-full flex items-center gap-3">
-          <button onClick={() => navigate(-1)} className="p-2 rounded-xl" style={{ background:'rgba(0,0,0,0.15)' }}>
+          <button onClick={() => navigate(-1)} className="p-2 rounded-xl transition-all active:scale-95" style={{ background:'rgba(255,255,255,0.15)' }}>
             <ArrowLeft className="w-5 h-5 text-white" />
           </button>
           <div>
@@ -138,21 +138,21 @@ export default function AddTapPage() {
       <div className="max-w-3xl mx-auto w-full flex-1 px-4 pt-5">
         {/* Auth gate */}
         {!user && (
-          <div className="rounded-2xl p-5 text-center mb-6" style={{ background:'rgba(29,158,117,0.1)', border:'1px solid rgba(29,158,117,0.25)' }}>
-            <Droplets className="w-8 h-8 mx-auto mb-2" style={{ color:'#1D9E75' }} />
-            <p className="font-semibold text-white mb-1">Sign in to contribute</p>
-            <p className="text-xs mb-4" style={{ color:'#9ca3af' }}>Google account required to add taps</p>
+          <div className="rounded-2xl p-5 text-center mb-6 bg-blue-50 border border-blue-150">
+            <Droplets className="w-8 h-8 mx-auto mb-2 text-blue-600" />
+            <p className="font-bold text-slate-800 mb-1">Sign in to contribute</p>
+            <p className="text-xs mb-4 text-slate-500">Google account required to add taps</p>
             <button onClick={signIn} className="btn-primary mx-auto">Sign in with Google</button>
           </div>
         )}
 
         {success ? (
           <div className="flex flex-col items-center justify-center py-20 gap-4">
-            <div className="w-20 h-20 rounded-full flex items-center justify-center animate-bounce-in" style={{ background:'rgba(29,158,117,0.15)', border:'2px solid #1D9E75' }}>
-              <CheckSquare className="w-10 h-10" style={{ color:'#1D9E75' }} />
+            <div className="w-20 h-20 rounded-full flex items-center justify-center animate-bounce-in bg-emerald-50 border-2 border-emerald-500">
+              <CheckSquare className="w-10 h-10 text-emerald-600" />
             </div>
-            <h2 className="text-xl font-bold text-white">Tap Added!</h2>
-            <p className="text-sm text-center" style={{ color:'#9ca3af' }}>Now visible on the map. Thank you for helping the community!</p>
+            <h2 className="text-xl font-bold text-slate-800">Tap Added!</h2>
+            <p className="text-sm text-center text-slate-500">Now visible on the map. Thank you for helping the community!</p>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-12">
@@ -160,33 +160,33 @@ export default function AddTapPage() {
             <div className="space-y-5">
               {/* Map pin */}
               <div>
-                <FieldLabel><MapPin className="inline w-3.5 h-3.5 mr-1" style={{ color:'#1D9E75' }} />Tap Location — tap the map</FieldLabel>
-                <div className="rounded-2xl overflow-hidden" style={{ height:250, border:'1px solid rgba(255,255,255,0.08)' }}>
+                <FieldLabel><MapPin className="inline w-3.5 h-3.5 mr-1 text-blue-600" />Tap Location — tap the map</FieldLabel>
+                <div className="rounded-2xl overflow-hidden border border-slate-200" style={{ height:250 }}>
                   <MapContainer center={pin || mapCenter} zoom={14} style={{ height:'100%', width:'100%' }} zoomControl={false}>
                     <TileLayer attribution='&copy; OpenStreetMap contributors' url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                     <PinSelector position={pin} setPosition={setPin} setHasClickedMap={setHasClickedMap} />
                   </MapContainer>
                 </div>
-                {pin && <p className="text-xs mt-1.5 font-mono" style={{ color:'#1D9E75' }}>{pin[0].toFixed(5)}, {pin[1].toFixed(5)}</p>}
-                {errors.pin && <p className="text-xs mt-1" style={{ color:'#fca5a5' }}>{errors.pin}</p>}
+                {pin && <p className="text-xs mt-1.5 font-mono text-blue-600 font-bold">{pin[0].toFixed(5)}, {pin[1].toFixed(5)}</p>}
+                {errors.pin && <p className="text-xs mt-1 text-red-600">{errors.pin}</p>}
               </div>
 
               {/* Photo */}
               <div>
-                <FieldLabel><Camera className="inline w-3.5 h-3.5 mr-1" style={{ color:'#1D9E75' }} />Add Photo (optional)</FieldLabel>
+                <FieldLabel><Camera className="inline w-3.5 h-3.5 mr-1 text-blue-600" />Add Photo (optional)</FieldLabel>
                 <input ref={fileRef} type="file" accept="image/*" onChange={e=>{ const f=e.target.files[0]; if(f) setPhoto(URL.createObjectURL(f)); }} className="hidden" />
                 <button type="button" onClick={()=>fileRef.current?.click()}
-                  className="w-full rounded-2xl p-5 text-center transition-colors"
-                  style={{ border:'1.5px dashed rgba(255,255,255,0.1)' }}>
+                  className="w-full rounded-2xl p-5 text-center transition-colors bg-white hover:bg-slate-50"
+                  style={{ border:'1.5px dashed #CBD5E1' }}>
                   {photo ? (
                     <>
                       <img src={photo} alt="Preview" className="w-full h-32 object-cover rounded-xl mb-2" />
-                      <p className="text-xs" style={{ color:'#1D9E75' }}>Tap to change photo</p>
+                      <p className="text-xs text-blue-600 font-semibold">Tap to change photo</p>
                     </>
                   ) : (
                     <>
-                      <Camera className="w-8 h-8 mx-auto mb-2" style={{ color:'#374151' }} />
-                      <p className="text-sm" style={{ color:'#6b7280' }}>Tap to upload a photo</p>
+                      <Camera className="w-8 h-8 mx-auto mb-2 text-slate-300" />
+                      <p className="text-sm text-slate-500">Tap to upload a photo</p>
                     </>
                   )}
                 </button>
@@ -199,33 +199,33 @@ export default function AddTapPage() {
               <div>
                 <FieldLabel>Tap Name *</FieldLabel>
                 <input type="text" value={form.name} onChange={e=>set('name',e.target.value)} placeholder="e.g. Central Park Fountain"
-                  className="input-field" style={{ borderColor: errors.name?'rgba(239,68,68,0.5)':undefined }} />
-                {errors.name && <p className="text-xs mt-1" style={{ color:'#fca5a5' }}>{errors.name}</p>}
+                  className="input-field" style={{ borderColor: errors.name?'#EF4444':undefined }} />
+                {errors.name && <p className="text-xs mt-1 text-red-600">{errors.name}</p>}
               </div>
 
               {/* Address */}
               <div>
                 <FieldLabel>Address / Landmark *</FieldLabel>
                 <input type="text" value={form.address} onChange={e=>set('address',e.target.value)} placeholder="e.g. Near Gate 3, Lodi Garden"
-                  className="input-field" style={{ borderColor: errors.address?'rgba(239,68,68,0.5)':undefined }} />
-                {errors.address && <p className="text-xs mt-1" style={{ color:'#fca5a5' }}>{errors.address}</p>}
+                  className="input-field" style={{ borderColor: errors.address?'#EF4444':undefined }} />
+                {errors.address && <p className="text-xs mt-1 text-red-600">{errors.address}</p>}
               </div>
 
               {/* Hours */}
               <div>
-                <FieldLabel><Clock className="inline w-3.5 h-3.5 mr-1" style={{ color:'#1D9E75' }} />Operating Hours</FieldLabel>
+                <FieldLabel><Clock className="inline w-3.5 h-3.5 mr-1 text-blue-600" />Operating Hours</FieldLabel>
                 <div className="relative">
                   <button type="button" onClick={()=>setHoursOpen(v=>!v)}
-                    className="input-field flex items-center justify-between w-full text-left" style={{ color:'#d1d5db' }}>
+                    className="input-field flex items-center justify-between w-full text-left font-medium text-slate-700 bg-white">
                     <span>{form.hours}</span>
-                    <ChevronDown className={`w-4 h-4 transition-transform ${hoursOpen?'rotate-180':''}`} style={{ color:'#6b7280' }} />
+                    <ChevronDown className={`w-4 h-4 transition-transform text-slate-400 ${hoursOpen?'rotate-180':''}`} />
                   </button>
                   {hoursOpen && (
-                    <div className="absolute top-full left-0 right-0 mt-1 z-10 rounded-2xl overflow-hidden shadow-xl" style={{ background:'#1b2131', border:'1px solid rgba(255,255,255,0.08)' }}>
+                    <div className="absolute top-full left-0 right-0 mt-1 z-10 rounded-2xl overflow-hidden shadow-xl bg-white border border-slate-200">
                       {HOURS.map(h => (
                         <button key={h} type="button" onClick={()=>{set('hours',h);setHoursOpen(false);}}
-                          className="w-full text-left px-4 py-3 text-sm transition-colors"
-                          style={{ color: form.hours===h?'#1D9E75':'#d1d5db', background: form.hours===h?'rgba(29,158,117,0.1)':'transparent', fontWeight: form.hours===h?600:400 }}>
+                          className="w-full text-left px-4 py-3 text-sm transition-colors hover:bg-slate-50"
+                          style={{ color: form.hours===h?'#2563EB':'#334155', background: form.hours===h?'rgba(37,99,235,0.06)':'transparent', fontWeight: form.hours===h?600:400 }}>
                           {h}
                         </button>
                       ))}
@@ -239,7 +239,7 @@ export default function AddTapPage() {
 
               {/* Water quality */}
               <div>
-                <FieldLabel><Droplets className="inline w-3.5 h-3.5 mr-1" style={{ color:'#1D9E75' }} />Water Quality</FieldLabel>
+                <FieldLabel><Droplets className="inline w-3.5 h-3.5 mr-1 text-blue-600" />Water Quality</FieldLabel>
                 <div className="flex flex-wrap gap-2">
                   {QUALITY.map(q => (
                     <button key={q} type="button" onClick={()=>set('waterQuality',q)}
@@ -253,10 +253,14 @@ export default function AddTapPage() {
                {/* Toggles */}
               <div>
                 <button type="button" onClick={()=>set('isFree',!form.isFree)}
-                  className="flex items-center justify-center gap-2 py-3 w-full rounded-2xl text-xs font-medium transition-all"
-                  style={{ background: form.isFree?'rgba(29,158,117,0.15)':'#1b2131', border:`1px solid ${form.isFree?'rgba(29,158,117,0.4)':'rgba(255,255,255,0.08)'}`, color: form.isFree?'#4dd6a3':'#9ca3af' }}>
+                  className="flex items-center justify-center gap-2 py-3 w-full rounded-2xl text-xs font-bold transition-all bg-white border border-slate-200 shadow-sm"
+                  style={{
+                    background: form.isFree ? 'rgba(37,99,235,0.08)' : '#FFFFFF',
+                    borderColor: form.isFree ? 'rgba(37,99,235,0.25)' : '#E2E8F0',
+                    color: form.isFree ? '#2563EB' : '#64748B'
+                  }}>
                   <div className="w-4 h-4 rounded border-2 flex items-center justify-center transition-all"
-                    style={{ background:form.isFree?'#1D9E75':'transparent', borderColor:form.isFree?'#1D9E75':'#4b5563' }}>
+                    style={{ background:form.isFree?'#2563EB':'transparent', borderColor:form.isFree?'#2563EB':'#CBD5E1' }}>
                     {form.isFree && <svg viewBox="0 0 10 8" className="w-2.5" fill="none"><path d="M1 4l3 3 5-6" stroke="white" strokeWidth="1.5" strokeLinecap="round"/></svg>}
                   </div>
                   Free to use
@@ -265,21 +269,21 @@ export default function AddTapPage() {
 
               {/* Payment Methods sub-selector */}
               {!form.isFree && (
-                <div className="p-4 rounded-2xl space-y-3 animate-fade-in" style={{ background: '#1b2131', border: '1px solid rgba(255,255,255,0.06)' }}>
+                <div className="p-4 rounded-2xl space-y-3 animate-fade-in bg-white border border-slate-200 shadow-sm">
                   <FieldLabel>Accepted Payment Methods</FieldLabel>
                   <div className="flex gap-2">
                     {[{k:'coin', l:'Coin Operated'}, {k:'upi', l:'UPI / QR Code'}].map(({k,l}) => {
                       const isActive = (form.paymentMethods || []).includes(k);
                       return (
                         <button key={k} type="button" onClick={() => handlePaymentMethodToggle(k)}
-                          className="flex-1 py-2.5 px-3 rounded-xl text-xs font-medium transition-all flex items-center justify-center gap-1.5"
+                          className="flex-1 py-2.5 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5"
                           style={{
-                            background: isActive ? 'rgba(29,158,117,0.12)' : '#141820',
-                            border: `1.5px solid ${isActive ? 'rgba(29,158,117,0.4)' : 'rgba(255,255,255,0.06)'}`,
-                            color: isActive ? '#4dd6a3' : '#9ca3af'
+                            background: isActive ? 'rgba(37,99,235,0.08)' : '#F8FAFC',
+                            border: `1.5px solid ${isActive ? 'rgba(37,99,235,0.25)' : '#E2E8F0'}`,
+                            color: isActive ? '#2563EB' : '#64748B'
                           }}
                         >
-                          <div className="w-3.5 h-3.5 rounded-full border flex items-center justify-center" style={{ borderColor: isActive ? '#1D9E75' : '#4b5563', background: isActive ? '#1D9E75' : 'transparent' }}>
+                          <div className="w-3.5 h-3.5 rounded-full border flex items-center justify-center" style={{ borderColor: isActive ? '#2563EB' : '#CBD5E1', background: isActive ? '#2563EB' : 'transparent' }}>
                             {isActive && <svg viewBox="0 0 10 8" className="w-2" fill="none"><path d="M1 4l3 3 5-6" stroke="white" strokeWidth="2" strokeLinecap="round"/></svg>}
                           </div>
                           {l}
