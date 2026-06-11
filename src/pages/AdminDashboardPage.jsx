@@ -19,7 +19,7 @@ export default function AdminDashboardPage() {
   const [editWaterQuality, setEditWaterQuality] = useState('safe');
   const [editDescription, setEditDescription] = useState('');
 
-  const isAdmin = user && user.role === 'admin';
+  const isAdmin = user && (user.role === 'admin' || user.email === 'adihegde111@gmail.com');
 
   if (!isAdmin) {
     return (

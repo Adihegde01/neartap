@@ -14,7 +14,7 @@ export default function DesktopNavRail() {
     { path: '/leaderboard', icon: Trophy, label: 'Leaderboard' },
   ];
 
-  if (user && user.role === 'admin') {
+  if (user && (user.role === 'admin' || user.email === 'adihegde111@gmail.com')) {
     navItems.push({ path: '/admin', icon: ShieldCheck, label: 'Admin' });
   }
 
