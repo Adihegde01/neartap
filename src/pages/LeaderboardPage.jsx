@@ -11,6 +11,8 @@ export default function LeaderboardPage() {
     const usersMap = {};
     taps.forEach(tap => {
       const uid = tap.addedBy?.uid || 'anon';
+      // Exclude bot/import accounts from leaderboard
+      if (uid === 'google-maps-import' || uid === 'anon') return;
       const name = tap.addedBy?.name || 'Anonymous';
       const photoURL = tap.addedBy?.photoURL || '';
 
